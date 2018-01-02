@@ -29,23 +29,11 @@ namespace WebMonitor
                 {
                     if (!_initialized)
                     {
-
-                        string webenginePath = Path.Combine(RuntimeEnvironment.GetRuntimeDirectory(), "webengine.dll");
-
-                        if (!File.Exists(webenginePath))
-                        {
-                            throw new Exception(String.Format(CultureInfo.InvariantCulture, "Failed to locate webengine.dll at '{0}'.  This module requires .NET Framework 2.0.",
-                                                              webenginePath));
-                        }
-
-                        FileVersionInfo ver = FileVersionInfo.GetVersionInfo(webenginePath);
-                        _sourceName = string.Format(CultureInfo.InvariantCulture, "ASP.NET {0}.{1}.{2}.0",
-                                                    ver.FileMajorPart, ver.FileMinorPart, ver.FileBuildPart);
+                        _sourceName = string.Format(CultureInfo.InvariantCulture, "ASP.NET {0}.{1}.{2}.0", System.Environment.Version.Major, System.Environment.Version.Minor, System.Environment.Version.Build);
 
                         if (!EventLog.SourceExists(_sourceName))
                         {
-                            throw new Exception(String.Format(CultureInfo.InvariantCulture, "There is no EventLog source named '{0}'. This module requires .NET Framework 2.0.",
-                                                              _sourceName));
+                            throw new Exception(String.Format(CultureInfo.InvariantCulture, "There is no EventLog source named '{0}'. This module requires .NET Framework 2.0.", _sourceName));
                         }
 
                         AppDomain.CurrentDomain.UnhandledException += new UnhandledExceptionEventHandler(OnUnhandledException);
